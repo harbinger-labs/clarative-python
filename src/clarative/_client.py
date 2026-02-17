@@ -31,9 +31,10 @@ from ._base_client import (
 )
 
 if TYPE_CHECKING:
-    from .resources import slas, vendors
+    from .resources import slas, vendors, risk_events
     from .resources.slas import SlasResource, AsyncSlasResource
     from .resources.vendors import VendorsResource, AsyncVendorsResource
+    from .resources.risk_events import RiskEventsResource, AsyncRiskEventsResource
 
 __all__ = [
     "Timeout",
@@ -89,7 +90,7 @@ class Clarative(SyncAPIClient):
         if base_url is None:
             base_url = os.environ.get("CLARATIVE_BASE_URL")
         if base_url is None:
-            base_url = f"https://api.example.com"
+            base_url = f"https://developer.clarative.ai"
 
         super().__init__(
             version=__version__,
@@ -101,6 +102,12 @@ class Clarative(SyncAPIClient):
             custom_query=default_query,
             _strict_response_validation=_strict_response_validation,
         )
+
+    @cached_property
+    def risk_events(self) -> RiskEventsResource:
+        from .resources.risk_events import RiskEventsResource
+
+        return RiskEventsResource(self)
 
     @cached_property
     def slas(self) -> SlasResource:
@@ -269,7 +276,7 @@ class AsyncClarative(AsyncAPIClient):
         if base_url is None:
             base_url = os.environ.get("CLARATIVE_BASE_URL")
         if base_url is None:
-            base_url = f"https://api.example.com"
+            base_url = f"https://developer.clarative.ai"
 
         super().__init__(
             version=__version__,
@@ -281,6 +288,12 @@ class AsyncClarative(AsyncAPIClient):
             custom_query=default_query,
             _strict_response_validation=_strict_response_validation,
         )
+
+    @cached_property
+    def risk_events(self) -> AsyncRiskEventsResource:
+        from .resources.risk_events import AsyncRiskEventsResource
+
+        return AsyncRiskEventsResource(self)
 
     @cached_property
     def slas(self) -> AsyncSlasResource:
@@ -414,6 +427,12 @@ class ClarativeWithRawResponse:
         self._client = client
 
     @cached_property
+    def risk_events(self) -> risk_events.RiskEventsResourceWithRawResponse:
+        from .resources.risk_events import RiskEventsResourceWithRawResponse
+
+        return RiskEventsResourceWithRawResponse(self._client.risk_events)
+
+    @cached_property
     def slas(self) -> slas.SlasResourceWithRawResponse:
         from .resources.slas import SlasResourceWithRawResponse
 
@@ -431,6 +450,12 @@ class AsyncClarativeWithRawResponse:
 
     def __init__(self, client: AsyncClarative) -> None:
         self._client = client
+
+    @cached_property
+    def risk_events(self) -> risk_events.AsyncRiskEventsResourceWithRawResponse:
+        from .resources.risk_events import AsyncRiskEventsResourceWithRawResponse
+
+        return AsyncRiskEventsResourceWithRawResponse(self._client.risk_events)
 
     @cached_property
     def slas(self) -> slas.AsyncSlasResourceWithRawResponse:
@@ -452,6 +477,12 @@ class ClarativeWithStreamedResponse:
         self._client = client
 
     @cached_property
+    def risk_events(self) -> risk_events.RiskEventsResourceWithStreamingResponse:
+        from .resources.risk_events import RiskEventsResourceWithStreamingResponse
+
+        return RiskEventsResourceWithStreamingResponse(self._client.risk_events)
+
+    @cached_property
     def slas(self) -> slas.SlasResourceWithStreamingResponse:
         from .resources.slas import SlasResourceWithStreamingResponse
 
@@ -469,6 +500,12 @@ class AsyncClarativeWithStreamedResponse:
 
     def __init__(self, client: AsyncClarative) -> None:
         self._client = client
+
+    @cached_property
+    def risk_events(self) -> risk_events.AsyncRiskEventsResourceWithStreamingResponse:
+        from .resources.risk_events import AsyncRiskEventsResourceWithStreamingResponse
+
+        return AsyncRiskEventsResourceWithStreamingResponse(self._client.risk_events)
 
     @cached_property
     def slas(self) -> slas.AsyncSlasResourceWithStreamingResponse:

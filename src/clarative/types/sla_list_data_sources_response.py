@@ -1,6 +1,7 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 from typing import List, Optional
+from typing_extensions import Literal
 
 from .._models import BaseModel
 
@@ -17,6 +18,9 @@ class MonitorDataSource(BaseModel):
     urn: str
     """A unique identifier for the data source"""
 
+    data_source_type: Optional[Literal["MONITOR"]] = None
+    """The type of the data source"""
+
 
 class StatusPageDataSource(BaseModel):
     """
@@ -31,6 +35,9 @@ class StatusPageDataSource(BaseModel):
 
     urn: str
     """A unique identifier for the data source"""
+
+    data_source_type: Optional[Literal["STATUS_PAGE"]] = None
+    """The type of the data source"""
 
 
 class SlaListDataSourcesResponse(BaseModel):
