@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+from typing import Optional
+
 import httpx
 
-from .._types import Body, Query, Headers, NotGiven, not_given
+from ..types import sla_list_violations_params, sla_get_uptime_metrics_params
+from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from .._utils import maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -16,7 +20,10 @@ from .._response import (
 from .._base_client import make_request_options
 from ..types.sla_list_response import SlaListResponse
 from ..types.sla_retrieve_response import SlaRetrieveResponse
+from ..types.sla_list_violations_response import SlaListViolationsResponse
 from ..types.sla_list_data_sources_response import SlaListDataSourcesResponse
+from ..types.sla_get_uptime_metrics_response import SlaGetUptimeMetricsResponse
+from ..types.sla_retrieve_violation_response import SlaRetrieveViolationResponse
 
 __all__ = ["SlasResource", "AsyncSlasResource"]
 
@@ -93,6 +100,60 @@ class SlasResource(SyncAPIResource):
             cast_to=SlaListResponse,
         )
 
+    def get_uptime_metrics(
+        self,
+        data_source_urn: str,
+        *,
+        sla_urn: str,
+        timeframe_end: Optional[str] | Omit = omit,
+        timeframe_start: Optional[str] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> SlaGetUptimeMetricsResponse:
+        """
+        Get uptime metrics for an SLA data source
+
+        Args:
+          timeframe_end: Year and month landing within the last SLA evaluation period to include in the
+              result, in the format YYYY-MM
+
+          timeframe_start: Year and month landing within the first SLA evaluation period to include in the
+              result, in the format YYYY-MM
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not sla_urn:
+            raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
+        if not data_source_urn:
+            raise ValueError(f"Expected a non-empty value for `data_source_urn` but received {data_source_urn!r}")
+        return self._get(
+            f"/v1/slas/{sla_urn}/data-sources/{data_source_urn}/uptime-metrics",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "timeframe_end": timeframe_end,
+                        "timeframe_start": timeframe_start,
+                    },
+                    sla_get_uptime_metrics_params.SlaGetUptimeMetricsParams,
+                ),
+            ),
+            cast_to=SlaGetUptimeMetricsResponse,
+        )
+
     def list_data_sources(
         self,
         sla_urn: str,
@@ -124,6 +185,97 @@ class SlasResource(SyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=SlaListDataSourcesResponse,
+        )
+
+    def list_violations(
+        self,
+        sla_urn: str,
+        *,
+        data_source_urn: Optional[str] | Omit = omit,
+        timeframe_end: Optional[str] | Omit = omit,
+        timeframe_start: Optional[str] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> SlaListViolationsResponse:
+        """
+        List all violations for an SLA
+
+        Args:
+          data_source_urn: An SLA data source's unique identifier
+
+          timeframe_end: Year and month landing within the last SLA evaluation period to include in the
+              result, in the format YYYY-MM
+
+          timeframe_start: Year and month landing within the first SLA evaluation period to include in the
+              result, in the format YYYY-MM
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not sla_urn:
+            raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
+        return self._get(
+            f"/v1/slas/{sla_urn}/violations",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "data_source_urn": data_source_urn,
+                        "timeframe_end": timeframe_end,
+                        "timeframe_start": timeframe_start,
+                    },
+                    sla_list_violations_params.SlaListViolationsParams,
+                ),
+            ),
+            cast_to=SlaListViolationsResponse,
+        )
+
+    def retrieve_violation(
+        self,
+        violation_urn: str,
+        *,
+        sla_urn: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> SlaRetrieveViolationResponse:
+        """
+        Get details on a specific SLA violation
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not sla_urn:
+            raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
+        if not violation_urn:
+            raise ValueError(f"Expected a non-empty value for `violation_urn` but received {violation_urn!r}")
+        return self._get(
+            f"/v1/slas/{sla_urn}/violations/{violation_urn}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=SlaRetrieveViolationResponse,
         )
 
 
@@ -199,6 +351,60 @@ class AsyncSlasResource(AsyncAPIResource):
             cast_to=SlaListResponse,
         )
 
+    async def get_uptime_metrics(
+        self,
+        data_source_urn: str,
+        *,
+        sla_urn: str,
+        timeframe_end: Optional[str] | Omit = omit,
+        timeframe_start: Optional[str] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> SlaGetUptimeMetricsResponse:
+        """
+        Get uptime metrics for an SLA data source
+
+        Args:
+          timeframe_end: Year and month landing within the last SLA evaluation period to include in the
+              result, in the format YYYY-MM
+
+          timeframe_start: Year and month landing within the first SLA evaluation period to include in the
+              result, in the format YYYY-MM
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not sla_urn:
+            raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
+        if not data_source_urn:
+            raise ValueError(f"Expected a non-empty value for `data_source_urn` but received {data_source_urn!r}")
+        return await self._get(
+            f"/v1/slas/{sla_urn}/data-sources/{data_source_urn}/uptime-metrics",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "timeframe_end": timeframe_end,
+                        "timeframe_start": timeframe_start,
+                    },
+                    sla_get_uptime_metrics_params.SlaGetUptimeMetricsParams,
+                ),
+            ),
+            cast_to=SlaGetUptimeMetricsResponse,
+        )
+
     async def list_data_sources(
         self,
         sla_urn: str,
@@ -232,6 +438,97 @@ class AsyncSlasResource(AsyncAPIResource):
             cast_to=SlaListDataSourcesResponse,
         )
 
+    async def list_violations(
+        self,
+        sla_urn: str,
+        *,
+        data_source_urn: Optional[str] | Omit = omit,
+        timeframe_end: Optional[str] | Omit = omit,
+        timeframe_start: Optional[str] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> SlaListViolationsResponse:
+        """
+        List all violations for an SLA
+
+        Args:
+          data_source_urn: An SLA data source's unique identifier
+
+          timeframe_end: Year and month landing within the last SLA evaluation period to include in the
+              result, in the format YYYY-MM
+
+          timeframe_start: Year and month landing within the first SLA evaluation period to include in the
+              result, in the format YYYY-MM
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not sla_urn:
+            raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
+        return await self._get(
+            f"/v1/slas/{sla_urn}/violations",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "data_source_urn": data_source_urn,
+                        "timeframe_end": timeframe_end,
+                        "timeframe_start": timeframe_start,
+                    },
+                    sla_list_violations_params.SlaListViolationsParams,
+                ),
+            ),
+            cast_to=SlaListViolationsResponse,
+        )
+
+    async def retrieve_violation(
+        self,
+        violation_urn: str,
+        *,
+        sla_urn: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> SlaRetrieveViolationResponse:
+        """
+        Get details on a specific SLA violation
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not sla_urn:
+            raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
+        if not violation_urn:
+            raise ValueError(f"Expected a non-empty value for `violation_urn` but received {violation_urn!r}")
+        return await self._get(
+            f"/v1/slas/{sla_urn}/violations/{violation_urn}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=SlaRetrieveViolationResponse,
+        )
+
 
 class SlasResourceWithRawResponse:
     def __init__(self, slas: SlasResource) -> None:
@@ -243,8 +540,17 @@ class SlasResourceWithRawResponse:
         self.list = to_raw_response_wrapper(
             slas.list,
         )
+        self.get_uptime_metrics = to_raw_response_wrapper(
+            slas.get_uptime_metrics,
+        )
         self.list_data_sources = to_raw_response_wrapper(
             slas.list_data_sources,
+        )
+        self.list_violations = to_raw_response_wrapper(
+            slas.list_violations,
+        )
+        self.retrieve_violation = to_raw_response_wrapper(
+            slas.retrieve_violation,
         )
 
 
@@ -258,8 +564,17 @@ class AsyncSlasResourceWithRawResponse:
         self.list = async_to_raw_response_wrapper(
             slas.list,
         )
+        self.get_uptime_metrics = async_to_raw_response_wrapper(
+            slas.get_uptime_metrics,
+        )
         self.list_data_sources = async_to_raw_response_wrapper(
             slas.list_data_sources,
+        )
+        self.list_violations = async_to_raw_response_wrapper(
+            slas.list_violations,
+        )
+        self.retrieve_violation = async_to_raw_response_wrapper(
+            slas.retrieve_violation,
         )
 
 
@@ -273,8 +588,17 @@ class SlasResourceWithStreamingResponse:
         self.list = to_streamed_response_wrapper(
             slas.list,
         )
+        self.get_uptime_metrics = to_streamed_response_wrapper(
+            slas.get_uptime_metrics,
+        )
         self.list_data_sources = to_streamed_response_wrapper(
             slas.list_data_sources,
+        )
+        self.list_violations = to_streamed_response_wrapper(
+            slas.list_violations,
+        )
+        self.retrieve_violation = to_streamed_response_wrapper(
+            slas.retrieve_violation,
         )
 
 
@@ -288,6 +612,15 @@ class AsyncSlasResourceWithStreamingResponse:
         self.list = async_to_streamed_response_wrapper(
             slas.list,
         )
+        self.get_uptime_metrics = async_to_streamed_response_wrapper(
+            slas.get_uptime_metrics,
+        )
         self.list_data_sources = async_to_streamed_response_wrapper(
             slas.list_data_sources,
+        )
+        self.list_violations = async_to_streamed_response_wrapper(
+            slas.list_violations,
+        )
+        self.retrieve_violation = async_to_streamed_response_wrapper(
+            slas.retrieve_violation,
         )

@@ -16,8 +16,22 @@ from .vendors import (
     VendorsResourceWithStreamingResponse,
     AsyncVendorsResourceWithStreamingResponse,
 )
+from .risk_events import (
+    RiskEventsResource,
+    AsyncRiskEventsResource,
+    RiskEventsResourceWithRawResponse,
+    AsyncRiskEventsResourceWithRawResponse,
+    RiskEventsResourceWithStreamingResponse,
+    AsyncRiskEventsResourceWithStreamingResponse,
+)
 
 __all__ = [
+    "RiskEventsResource",
+    "AsyncRiskEventsResource",
+    "RiskEventsResourceWithRawResponse",
+    "AsyncRiskEventsResourceWithRawResponse",
+    "RiskEventsResourceWithStreamingResponse",
+    "AsyncRiskEventsResourceWithStreamingResponse",
     "SlasResource",
     "AsyncSlasResource",
     "SlasResourceWithRawResponse",
