@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.3 (2026-02-19)
+
+Full Changelog: [v0.0.2...v0.0.3](https://github.com/harbinger-labs/clarative-python/compare/v0.0.2...v0.0.3)
+
+### Chores
+
+* update SDK settings ([f01ea7b](https://github.com/harbinger-labs/clarative-python/commit/f01ea7b64c91512a9f4500950535e55174dcef41))
+
 ## 0.0.2 (2026-02-19)
 
 Full Changelog: [v0.0.1...v0.0.2](https://github.com/harbinger-labs/clarative-python/compare/v0.0.1...v0.0.2)
