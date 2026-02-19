@@ -12,6 +12,10 @@ jobs:
   publish:
     name: publish
     runs-on: ubuntu-latest
+    environment: publishing
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - uses: actions/checkout@v6
