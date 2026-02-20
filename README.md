@@ -11,7 +11,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Documentation
 
-The REST API documentation can be found on [app.clarative.ai](https://app.clarative.ai/docs). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.clarative.ai](https://docs.clarative.ai/api). The full API of this library can be found in [api.md](api.md).
 
 ## Installation
 
@@ -32,10 +32,9 @@ client = Clarative(
     api_key=os.environ.get("CLARATIVE_API_KEY"),  # This is the default and can be omitted
 )
 
-response = client.slas.list_data_sources(
-    "REPLACE_ME",
+potential_sla_violations = client.slas.list_violations(
+    sla_urn="urn:sla:example123",
 )
-print(response.monitor_data_sources)
 ```
 
 While you can provide an `api_key` keyword argument,
@@ -58,10 +57,9 @@ client = AsyncClarative(
 
 
 async def main() -> None:
-    response = await client.slas.list_data_sources(
-        "REPLACE_ME",
+    potential_sla_violations = await client.slas.list_violations(
+        sla_urn="urn:sla:example123",
     )
-    print(response.monitor_data_sources)
 
 
 asyncio.run(main())
@@ -94,10 +92,9 @@ async def main() -> None:
         api_key=os.environ.get("CLARATIVE_API_KEY"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
-        response = await client.slas.list_data_sources(
-            "REPLACE_ME",
+        potential_sla_violations = await client.slas.list_violations(
+            sla_urn="urn:sla:example123",
         )
-        print(response.monitor_data_sources)
 
 
 asyncio.run(main())
@@ -128,9 +125,7 @@ from clarative import Clarative
 client = Clarative()
 
 try:
-    client.slas.list_data_sources(
-        "REPLACE_ME",
-    )
+    client.vendors.list()
 except clarative.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
@@ -173,9 +168,7 @@ client = Clarative(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).slas.list_data_sources(
-    "REPLACE_ME",
-)
+client.with_options(max_retries=5).vendors.list()
 ```
 
 ### Timeouts
@@ -198,9 +191,7 @@ client = Clarative(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).slas.list_data_sources(
-    "REPLACE_ME",
-)
+client.with_options(timeout=5.0).vendors.list()
 ```
 
 On timeout, an `APITimeoutError` is thrown.
@@ -241,13 +232,11 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from clarative import Clarative
 
 client = Clarative()
-response = client.slas.with_raw_response.list_data_sources(
-    "REPLACE_ME",
-)
+response = client.vendors.with_raw_response.list()
 print(response.headers.get('X-My-Header'))
 
-sla = response.parse()  # get the object that `slas.list_data_sources()` would have returned
-print(sla.monitor_data_sources)
+vendor = response.parse()  # get the object that `vendors.list()` would have returned
+print(vendor)
 ```
 
 These methods return an [`APIResponse`](https://github.com/harbinger-labs/clarative-python/tree/main/src/clarative/_response.py) object.
@@ -261,9 +250,7 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.slas.with_streaming_response.list_data_sources(
-    "REPLACE_ME",
-) as response:
+with client.vendors.with_streaming_response.list() as response:
     print(response.headers.get("X-My-Header"))
 
     for line in response.iter_lines():

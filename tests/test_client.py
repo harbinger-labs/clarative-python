@@ -851,20 +851,20 @@ class TestClarative:
     @mock.patch("clarative._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter, client: Clarative) -> None:
-        respx_mock.get("/v1/slas/sla_urn/data-sources").mock(side_effect=httpx.TimeoutException("Test timeout error"))
+        respx_mock.get("/v1/vendors").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            client.slas.with_streaming_response.list_data_sources("sla_urn").__enter__()
+            client.vendors.with_streaming_response.list().__enter__()
 
         assert _get_open_connections(client) == 0
 
     @mock.patch("clarative._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter, client: Clarative) -> None:
-        respx_mock.get("/v1/slas/sla_urn/data-sources").mock(return_value=httpx.Response(500))
+        respx_mock.get("/v1/vendors").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            client.slas.with_streaming_response.list_data_sources("sla_urn").__enter__()
+            client.vendors.with_streaming_response.list().__enter__()
         assert _get_open_connections(client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
@@ -891,9 +891,9 @@ class TestClarative:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/v1/slas/sla_urn/data-sources").mock(side_effect=retry_handler)
+        respx_mock.get("/v1/vendors").mock(side_effect=retry_handler)
 
-        response = client.slas.with_raw_response.list_data_sources("sla_urn")
+        response = client.vendors.with_raw_response.list()
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -915,11 +915,9 @@ class TestClarative:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/v1/slas/sla_urn/data-sources").mock(side_effect=retry_handler)
+        respx_mock.get("/v1/vendors").mock(side_effect=retry_handler)
 
-        response = client.slas.with_raw_response.list_data_sources(
-            "sla_urn", extra_headers={"x-stainless-retry-count": Omit()}
-        )
+        response = client.vendors.with_raw_response.list(extra_headers={"x-stainless-retry-count": Omit()})
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
 
@@ -940,11 +938,9 @@ class TestClarative:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/v1/slas/sla_urn/data-sources").mock(side_effect=retry_handler)
+        respx_mock.get("/v1/vendors").mock(side_effect=retry_handler)
 
-        response = client.slas.with_raw_response.list_data_sources(
-            "sla_urn", extra_headers={"x-stainless-retry-count": "42"}
-        )
+        response = client.vendors.with_raw_response.list(extra_headers={"x-stainless-retry-count": "42"})
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
 
@@ -1755,10 +1751,10 @@ class TestAsyncClarative:
     async def test_retrying_timeout_errors_doesnt_leak(
         self, respx_mock: MockRouter, async_client: AsyncClarative
     ) -> None:
-        respx_mock.get("/v1/slas/sla_urn/data-sources").mock(side_effect=httpx.TimeoutException("Test timeout error"))
+        respx_mock.get("/v1/vendors").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            await async_client.slas.with_streaming_response.list_data_sources("sla_urn").__aenter__()
+            await async_client.vendors.with_streaming_response.list().__aenter__()
 
         assert _get_open_connections(async_client) == 0
 
@@ -1767,10 +1763,10 @@ class TestAsyncClarative:
     async def test_retrying_status_errors_doesnt_leak(
         self, respx_mock: MockRouter, async_client: AsyncClarative
     ) -> None:
-        respx_mock.get("/v1/slas/sla_urn/data-sources").mock(return_value=httpx.Response(500))
+        respx_mock.get("/v1/vendors").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            await async_client.slas.with_streaming_response.list_data_sources("sla_urn").__aenter__()
+            await async_client.vendors.with_streaming_response.list().__aenter__()
         assert _get_open_connections(async_client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
@@ -1797,9 +1793,9 @@ class TestAsyncClarative:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/v1/slas/sla_urn/data-sources").mock(side_effect=retry_handler)
+        respx_mock.get("/v1/vendors").mock(side_effect=retry_handler)
 
-        response = await client.slas.with_raw_response.list_data_sources("sla_urn")
+        response = await client.vendors.with_raw_response.list()
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -1821,11 +1817,9 @@ class TestAsyncClarative:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/v1/slas/sla_urn/data-sources").mock(side_effect=retry_handler)
+        respx_mock.get("/v1/vendors").mock(side_effect=retry_handler)
 
-        response = await client.slas.with_raw_response.list_data_sources(
-            "sla_urn", extra_headers={"x-stainless-retry-count": Omit()}
-        )
+        response = await client.vendors.with_raw_response.list(extra_headers={"x-stainless-retry-count": Omit()})
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
 
@@ -1846,11 +1840,9 @@ class TestAsyncClarative:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/v1/slas/sla_urn/data-sources").mock(side_effect=retry_handler)
+        respx_mock.get("/v1/vendors").mock(side_effect=retry_handler)
 
-        response = await client.slas.with_raw_response.list_data_sources(
-            "sla_urn", extra_headers={"x-stainless-retry-count": "42"}
-        )
+        response = await client.vendors.with_raw_response.list(extra_headers={"x-stainless-retry-count": "42"})
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
 
