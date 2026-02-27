@@ -143,6 +143,9 @@ class SlaRetrieveViolationResponse(BaseModel):
     data_source_type: Literal["STATUS_PAGE", "MONITOR"]
     """The type of data source used to determine the violation."""
 
+    data_source_urn: str
+    """The unique identifier of the data source used to determine the violation"""
+
     downtime_events: List[DowntimeEvent]
     """
     A list of downtime events that occurred during the evaluation period and
