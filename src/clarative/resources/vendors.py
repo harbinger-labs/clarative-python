@@ -83,7 +83,7 @@ class VendorsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> VendorListResponse:
-        """List all vendors"""
+        """List all vendors, sorted by name alphabetically (case-insensitive)"""
         return self._get(
             "/v1/vendors",
             options=make_request_options(
@@ -156,7 +156,7 @@ class AsyncVendorsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> VendorListResponse:
-        """List all vendors"""
+        """List all vendors, sorted by name alphabetically (case-insensitive)"""
         return await self._get(
             "/v1/vendors",
             options=make_request_options(

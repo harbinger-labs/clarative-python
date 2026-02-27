@@ -57,6 +57,9 @@ class SlaListViolationsResponseItem(BaseModel):
     data_source_type: Literal["STATUS_PAGE", "MONITOR"]
     """The type of data source used to determine the violation."""
 
+    data_source_urn: str
+    """The unique identifier of the data source used to determine the violation"""
+
     downtime_hours: float
     """The total number of downtime hours during the evaluation period"""
 

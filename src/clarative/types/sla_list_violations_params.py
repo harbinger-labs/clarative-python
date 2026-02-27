@@ -15,11 +15,11 @@ class SlaListViolationsParams(TypedDict, total=False):
     timeframe_end: Optional[str]
     """
     Year and month landing within the last SLA evaluation period to include in the
-    result, in the format YYYY-MM
+    result, in the format YYYY-MM. Defaults to the current time.
     """
 
     timeframe_start: Optional[str]
     """
     Year and month landing within the first SLA evaluation period to include in the
-    result, in the format YYYY-MM
+    result, in the format YYYY-MM. Defaults to January 2024.
     """
