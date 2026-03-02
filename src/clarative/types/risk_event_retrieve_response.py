@@ -18,7 +18,7 @@ class AIRiskLevelRecommendation(BaseModel):
     explanation: str
     """The explanation for the AI's risk level recommendation"""
 
-    recommended_risk_level: Literal["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+    recommended_risk_level: Literal["UNASSIGNED", "NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"]
     """The AI-recommended risk level for the event"""
 
 
@@ -64,15 +64,8 @@ class RiskEventRetrieveResponse(BaseModel):
     triage process.
     """
 
-    risk_level: Optional[Literal["LOW", "MEDIUM", "HIGH", "CRITICAL"]] = None
-    """Risk level classification for a risk event.
-
-    - LOW: Minimal impact.
-    - MEDIUM: Moderate impact, may require attention.
-    - HIGH: Significant impact, likely requires action.
-    - CRITICAL: Severe impact, requires immediate action. It is rare to encounter
-      this.
-    """
+    risk_level: Literal["UNASSIGNED", "NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"]
+    """The finalized, user-determined risk level for the event (if set)"""
 
     source_type: Literal["STATUS_PAGE", "MONITOR", "NEWS", "SEC_FILING"]
     """The type of the risk event"""
