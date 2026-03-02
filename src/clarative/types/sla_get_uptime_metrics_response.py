@@ -2,19 +2,13 @@
 
 from typing import List
 from datetime import datetime
-from typing_extensions import TypeAlias
 
 from .._models import BaseModel
 
-__all__ = [
-    "SlaGetUptimeMetricsResponse",
-    "SlaGetUptimeMetricsResponseItem",
-    "SlaGetUptimeMetricsResponseItemDowntimeEvent",
-    "SlaGetUptimeMetricsResponseItemTimeframe",
-]
+__all__ = ["SlaGetUptimeMetricsResponse", "DowntimeEvent", "Metrics", "MetricsDeduplicated", "Timeframe"]
 
 
-class SlaGetUptimeMetricsResponseItemDowntimeEvent(BaseModel):
+class DowntimeEvent(BaseModel):
     duration_hours: float
     """The duration of the downtime event in hours"""
 
@@ -28,7 +22,29 @@ class SlaGetUptimeMetricsResponseItemDowntimeEvent(BaseModel):
     """The start time of the downtime event"""
 
 
-class SlaGetUptimeMetricsResponseItemTimeframe(BaseModel):
+class Metrics(BaseModel):
+    """The uptime metrics for the data source during the timeframe"""
+
+    downtime_hours: float
+    """The total number of downtime hours during the timeframe"""
+
+    uptime_percentage: float
+    """The percentage of uptime during the timeframe"""
+
+
+class MetricsDeduplicated(BaseModel):
+    """
+    The uptime metrics for the data source during the timeframe, with overlapping windows of downtime (such as from different incidents that occurred simultaneously) counted only once
+    """
+
+    downtime_hours: float
+    """The total number of downtime hours during the timeframe"""
+
+    uptime_percentage: float
+    """The percentage of uptime during the timeframe"""
+
+
+class Timeframe(BaseModel):
     """The timeframe for which the uptime metrics are calculated"""
 
     end: datetime
@@ -44,27 +60,28 @@ class SlaGetUptimeMetricsResponseItemTimeframe(BaseModel):
     """
 
 
-class SlaGetUptimeMetricsResponseItem(BaseModel):
+class SlaGetUptimeMetricsResponse(BaseModel):
     data_source_urn: str
     """The unique identifier of the data source"""
 
-    downtime_events: List[SlaGetUptimeMetricsResponseItemDowntimeEvent]
-    """A list of downtime events that occurred during the timeframe"""
+    downtime_events: List[DowntimeEvent]
+    """A non-deduplicated list of downtime events that occurred during the timeframe"""
 
-    downtime_hours: float
-    """The total number of downtime hours during the timeframe"""
+    metrics: Metrics
+    """The uptime metrics for the data source during the timeframe"""
+
+    metrics_deduplicated: MetricsDeduplicated
+    """
+    The uptime metrics for the data source during the timeframe, with overlapping
+    windows of downtime (such as from different incidents that occurred
+    simultaneously) counted only once
+    """
 
     sla_urn: str
     """The unique identifier of the SLA"""
 
-    timeframe: SlaGetUptimeMetricsResponseItemTimeframe
+    timeframe: Timeframe
     """The timeframe for which the uptime metrics are calculated"""
-
-    uptime_percentage: float
-    """The percentage of uptime during the timeframe"""
 
     vendor_urn: str
     """The unique identifier of the vendor"""
-
-
-SlaGetUptimeMetricsResponse: TypeAlias = List[SlaGetUptimeMetricsResponseItem]
