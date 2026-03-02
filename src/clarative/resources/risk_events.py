@@ -81,7 +81,7 @@ class RiskEventsResource(SyncAPIResource):
     def list(
         self,
         *,
-        risk_threshold: Optional[Literal["LOW", "MEDIUM", "HIGH", "CRITICAL"]] | Omit = omit,
+        risk_threshold: Optional[Literal["UNASSIGNED", "NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"]] | Omit = omit,
         vendor_urn: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -91,7 +91,7 @@ class RiskEventsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> RiskEventListResponse:
         """
-        List all risk events with optional filters
+        List all risk events with optional filters, sorted by recency (oldest first)
 
         Args:
           risk_threshold: Filter events by minimum risk level
@@ -181,7 +181,7 @@ class AsyncRiskEventsResource(AsyncAPIResource):
     async def list(
         self,
         *,
-        risk_threshold: Optional[Literal["LOW", "MEDIUM", "HIGH", "CRITICAL"]] | Omit = omit,
+        risk_threshold: Optional[Literal["UNASSIGNED", "NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"]] | Omit = omit,
         vendor_urn: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -191,7 +191,7 @@ class AsyncRiskEventsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> RiskEventListResponse:
         """
-        List all risk events with optional filters
+        List all risk events with optional filters, sorted by recency (oldest first)
 
         Args:
           risk_threshold: Filter events by minimum risk level

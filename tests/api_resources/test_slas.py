@@ -24,7 +24,7 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestSlas:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: Clarative) -> None:
         sla = client.slas.retrieve(
@@ -32,7 +32,7 @@ class TestSlas:
         )
         assert_matches_type(SlaRetrieveResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: Clarative) -> None:
         response = client.slas.with_raw_response.retrieve(
@@ -44,7 +44,7 @@ class TestSlas:
         sla = response.parse()
         assert_matches_type(SlaRetrieveResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: Clarative) -> None:
         with client.slas.with_streaming_response.retrieve(
@@ -58,7 +58,7 @@ class TestSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_retrieve(self, client: Clarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `urn` but received ''"):
@@ -66,13 +66,13 @@ class TestSlas:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list(self, client: Clarative) -> None:
         sla = client.slas.list()
         assert_matches_type(SlaListResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list(self, client: Clarative) -> None:
         response = client.slas.with_raw_response.list()
@@ -82,7 +82,7 @@ class TestSlas:
         sla = response.parse()
         assert_matches_type(SlaListResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list(self, client: Clarative) -> None:
         with client.slas.with_streaming_response.list() as response:
@@ -94,32 +94,25 @@ class TestSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_get_uptime_metrics(self, client: Clarative) -> None:
         sla = client.slas.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
+            end="end",
+            start="start",
         )
         assert_matches_type(SlaGetUptimeMetricsResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
-    def test_method_get_uptime_metrics_with_all_params(self, client: Clarative) -> None:
-        sla = client.slas.get_uptime_metrics(
-            data_source_urn="data_source_urn",
-            sla_urn="sla_urn",
-            timeframe_end="timeframe_end",
-            timeframe_start="timeframe_start",
-        )
-        assert_matches_type(SlaGetUptimeMetricsResponse, sla, path=["response"])
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_get_uptime_metrics(self, client: Clarative) -> None:
         response = client.slas.with_raw_response.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
+            end="end",
+            start="start",
         )
 
         assert response.is_closed is True
@@ -127,12 +120,14 @@ class TestSlas:
         sla = response.parse()
         assert_matches_type(SlaGetUptimeMetricsResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_get_uptime_metrics(self, client: Clarative) -> None:
         with client.slas.with_streaming_response.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
+            end="end",
+            start="start",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -142,22 +137,26 @@ class TestSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_get_uptime_metrics(self, client: Clarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `sla_urn` but received ''"):
             client.slas.with_raw_response.get_uptime_metrics(
                 data_source_urn="data_source_urn",
                 sla_urn="",
+                end="end",
+                start="start",
             )
 
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `data_source_urn` but received ''"):
             client.slas.with_raw_response.get_uptime_metrics(
                 data_source_urn="",
                 sla_urn="sla_urn",
+                end="end",
+                start="start",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_data_sources(self, client: Clarative) -> None:
         sla = client.slas.list_data_sources(
@@ -165,7 +164,7 @@ class TestSlas:
         )
         assert_matches_type(SlaListDataSourcesResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list_data_sources(self, client: Clarative) -> None:
         response = client.slas.with_raw_response.list_data_sources(
@@ -177,7 +176,7 @@ class TestSlas:
         sla = response.parse()
         assert_matches_type(SlaListDataSourcesResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list_data_sources(self, client: Clarative) -> None:
         with client.slas.with_streaming_response.list_data_sources(
@@ -191,7 +190,7 @@ class TestSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_list_data_sources(self, client: Clarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `sla_urn` but received ''"):
@@ -199,7 +198,7 @@ class TestSlas:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_violations(self, client: Clarative) -> None:
         sla = client.slas.list_violations(
@@ -207,18 +206,18 @@ class TestSlas:
         )
         assert_matches_type(SlaListViolationsResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_violations_with_all_params(self, client: Clarative) -> None:
         sla = client.slas.list_violations(
             sla_urn="sla_urn",
             data_source_urn="data_source_urn",
-            timeframe_end="timeframe_end",
-            timeframe_start="timeframe_start",
+            end_month="end_month",
+            start_month="start_month",
         )
         assert_matches_type(SlaListViolationsResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list_violations(self, client: Clarative) -> None:
         response = client.slas.with_raw_response.list_violations(
@@ -230,7 +229,7 @@ class TestSlas:
         sla = response.parse()
         assert_matches_type(SlaListViolationsResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list_violations(self, client: Clarative) -> None:
         with client.slas.with_streaming_response.list_violations(
@@ -244,7 +243,7 @@ class TestSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_list_violations(self, client: Clarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `sla_urn` but received ''"):
@@ -252,7 +251,7 @@ class TestSlas:
                 sla_urn="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_violation(self, client: Clarative) -> None:
         sla = client.slas.retrieve_violation(
@@ -261,7 +260,7 @@ class TestSlas:
         )
         assert_matches_type(SlaRetrieveViolationResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve_violation(self, client: Clarative) -> None:
         response = client.slas.with_raw_response.retrieve_violation(
@@ -274,7 +273,7 @@ class TestSlas:
         sla = response.parse()
         assert_matches_type(SlaRetrieveViolationResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve_violation(self, client: Clarative) -> None:
         with client.slas.with_streaming_response.retrieve_violation(
@@ -289,7 +288,7 @@ class TestSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_retrieve_violation(self, client: Clarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `sla_urn` but received ''"):
@@ -310,7 +309,7 @@ class TestAsyncSlas:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncClarative) -> None:
         sla = await async_client.slas.retrieve(
@@ -318,7 +317,7 @@ class TestAsyncSlas:
         )
         assert_matches_type(SlaRetrieveResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncClarative) -> None:
         response = await async_client.slas.with_raw_response.retrieve(
@@ -330,7 +329,7 @@ class TestAsyncSlas:
         sla = await response.parse()
         assert_matches_type(SlaRetrieveResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncClarative) -> None:
         async with async_client.slas.with_streaming_response.retrieve(
@@ -344,7 +343,7 @@ class TestAsyncSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_retrieve(self, async_client: AsyncClarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `urn` but received ''"):
@@ -352,13 +351,13 @@ class TestAsyncSlas:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list(self, async_client: AsyncClarative) -> None:
         sla = await async_client.slas.list()
         assert_matches_type(SlaListResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncClarative) -> None:
         response = await async_client.slas.with_raw_response.list()
@@ -368,7 +367,7 @@ class TestAsyncSlas:
         sla = await response.parse()
         assert_matches_type(SlaListResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncClarative) -> None:
         async with async_client.slas.with_streaming_response.list() as response:
@@ -380,32 +379,25 @@ class TestAsyncSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_get_uptime_metrics(self, async_client: AsyncClarative) -> None:
         sla = await async_client.slas.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
+            end="end",
+            start="start",
         )
         assert_matches_type(SlaGetUptimeMetricsResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
-    async def test_method_get_uptime_metrics_with_all_params(self, async_client: AsyncClarative) -> None:
-        sla = await async_client.slas.get_uptime_metrics(
-            data_source_urn="data_source_urn",
-            sla_urn="sla_urn",
-            timeframe_end="timeframe_end",
-            timeframe_start="timeframe_start",
-        )
-        assert_matches_type(SlaGetUptimeMetricsResponse, sla, path=["response"])
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_get_uptime_metrics(self, async_client: AsyncClarative) -> None:
         response = await async_client.slas.with_raw_response.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
+            end="end",
+            start="start",
         )
 
         assert response.is_closed is True
@@ -413,12 +405,14 @@ class TestAsyncSlas:
         sla = await response.parse()
         assert_matches_type(SlaGetUptimeMetricsResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_get_uptime_metrics(self, async_client: AsyncClarative) -> None:
         async with async_client.slas.with_streaming_response.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
+            end="end",
+            start="start",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -428,22 +422,26 @@ class TestAsyncSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_get_uptime_metrics(self, async_client: AsyncClarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `sla_urn` but received ''"):
             await async_client.slas.with_raw_response.get_uptime_metrics(
                 data_source_urn="data_source_urn",
                 sla_urn="",
+                end="end",
+                start="start",
             )
 
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `data_source_urn` but received ''"):
             await async_client.slas.with_raw_response.get_uptime_metrics(
                 data_source_urn="",
                 sla_urn="sla_urn",
+                end="end",
+                start="start",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_data_sources(self, async_client: AsyncClarative) -> None:
         sla = await async_client.slas.list_data_sources(
@@ -451,7 +449,7 @@ class TestAsyncSlas:
         )
         assert_matches_type(SlaListDataSourcesResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list_data_sources(self, async_client: AsyncClarative) -> None:
         response = await async_client.slas.with_raw_response.list_data_sources(
@@ -463,7 +461,7 @@ class TestAsyncSlas:
         sla = await response.parse()
         assert_matches_type(SlaListDataSourcesResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list_data_sources(self, async_client: AsyncClarative) -> None:
         async with async_client.slas.with_streaming_response.list_data_sources(
@@ -477,7 +475,7 @@ class TestAsyncSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_list_data_sources(self, async_client: AsyncClarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `sla_urn` but received ''"):
@@ -485,7 +483,7 @@ class TestAsyncSlas:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_violations(self, async_client: AsyncClarative) -> None:
         sla = await async_client.slas.list_violations(
@@ -493,18 +491,18 @@ class TestAsyncSlas:
         )
         assert_matches_type(SlaListViolationsResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_violations_with_all_params(self, async_client: AsyncClarative) -> None:
         sla = await async_client.slas.list_violations(
             sla_urn="sla_urn",
             data_source_urn="data_source_urn",
-            timeframe_end="timeframe_end",
-            timeframe_start="timeframe_start",
+            end_month="end_month",
+            start_month="start_month",
         )
         assert_matches_type(SlaListViolationsResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list_violations(self, async_client: AsyncClarative) -> None:
         response = await async_client.slas.with_raw_response.list_violations(
@@ -516,7 +514,7 @@ class TestAsyncSlas:
         sla = await response.parse()
         assert_matches_type(SlaListViolationsResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list_violations(self, async_client: AsyncClarative) -> None:
         async with async_client.slas.with_streaming_response.list_violations(
@@ -530,7 +528,7 @@ class TestAsyncSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_list_violations(self, async_client: AsyncClarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `sla_urn` but received ''"):
@@ -538,7 +536,7 @@ class TestAsyncSlas:
                 sla_urn="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_violation(self, async_client: AsyncClarative) -> None:
         sla = await async_client.slas.retrieve_violation(
@@ -547,7 +545,7 @@ class TestAsyncSlas:
         )
         assert_matches_type(SlaRetrieveViolationResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve_violation(self, async_client: AsyncClarative) -> None:
         response = await async_client.slas.with_raw_response.retrieve_violation(
@@ -560,7 +558,7 @@ class TestAsyncSlas:
         sla = await response.parse()
         assert_matches_type(SlaRetrieveViolationResponse, sla, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve_violation(self, async_client: AsyncClarative) -> None:
         async with async_client.slas.with_streaming_response.retrieve_violation(
@@ -575,7 +573,7 @@ class TestAsyncSlas:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_retrieve_violation(self, async_client: AsyncClarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `sla_urn` but received ''"):

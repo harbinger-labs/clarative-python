@@ -17,7 +17,7 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestVendors:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: Clarative) -> None:
         vendor = client.vendors.retrieve(
@@ -25,7 +25,7 @@ class TestVendors:
         )
         assert_matches_type(VendorRetrieveResponse, vendor, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: Clarative) -> None:
         response = client.vendors.with_raw_response.retrieve(
@@ -37,7 +37,7 @@ class TestVendors:
         vendor = response.parse()
         assert_matches_type(VendorRetrieveResponse, vendor, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: Clarative) -> None:
         with client.vendors.with_streaming_response.retrieve(
@@ -51,7 +51,7 @@ class TestVendors:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_retrieve(self, client: Clarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `urn` but received ''"):
@@ -59,13 +59,13 @@ class TestVendors:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list(self, client: Clarative) -> None:
         vendor = client.vendors.list()
         assert_matches_type(VendorListResponse, vendor, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list(self, client: Clarative) -> None:
         response = client.vendors.with_raw_response.list()
@@ -75,7 +75,7 @@ class TestVendors:
         vendor = response.parse()
         assert_matches_type(VendorListResponse, vendor, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list(self, client: Clarative) -> None:
         with client.vendors.with_streaming_response.list() as response:
@@ -93,7 +93,7 @@ class TestAsyncVendors:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncClarative) -> None:
         vendor = await async_client.vendors.retrieve(
@@ -101,7 +101,7 @@ class TestAsyncVendors:
         )
         assert_matches_type(VendorRetrieveResponse, vendor, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncClarative) -> None:
         response = await async_client.vendors.with_raw_response.retrieve(
@@ -113,7 +113,7 @@ class TestAsyncVendors:
         vendor = await response.parse()
         assert_matches_type(VendorRetrieveResponse, vendor, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncClarative) -> None:
         async with async_client.vendors.with_streaming_response.retrieve(
@@ -127,7 +127,7 @@ class TestAsyncVendors:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_retrieve(self, async_client: AsyncClarative) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `urn` but received ''"):
@@ -135,13 +135,13 @@ class TestAsyncVendors:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list(self, async_client: AsyncClarative) -> None:
         vendor = await async_client.vendors.list()
         assert_matches_type(VendorListResponse, vendor, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncClarative) -> None:
         response = await async_client.vendors.with_raw_response.list()
@@ -151,7 +151,7 @@ class TestAsyncVendors:
         vendor = await response.parse()
         assert_matches_type(VendorListResponse, vendor, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncClarative) -> None:
         async with async_client.vendors.with_streaming_response.list() as response:

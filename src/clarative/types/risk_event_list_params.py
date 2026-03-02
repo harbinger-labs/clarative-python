@@ -9,7 +9,7 @@ __all__ = ["RiskEventListParams"]
 
 
 class RiskEventListParams(TypedDict, total=False):
-    risk_threshold: Optional[Literal["LOW", "MEDIUM", "HIGH", "CRITICAL"]]
+    risk_threshold: Optional[Literal["UNASSIGNED", "NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"]]
     """Filter events by minimum risk level"""
 
     vendor_urn: Optional[str]

@@ -91,7 +91,7 @@ class SlasResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SlaListResponse:
-        """List all SLAs"""
+        """List all SLAs, sorted by name alphabetically (case-insensitive)"""
         return self._get(
             "/v1/slas",
             options=make_request_options(
@@ -105,8 +105,8 @@ class SlasResource(SyncAPIResource):
         data_source_urn: str,
         *,
         sla_urn: str,
-        timeframe_end: Optional[str] | Omit = omit,
-        timeframe_start: Optional[str] | Omit = omit,
+        end: str,
+        start: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -118,10 +118,10 @@ class SlasResource(SyncAPIResource):
         Get uptime metrics for an SLA data source
 
         Args:
-          timeframe_end: Year and month landing within the last SLA evaluation period to include in the
+          end: Year and month landing within the last SLA evaluation period to include in the
               result, in the format YYYY-MM
 
-          timeframe_start: Year and month landing within the first SLA evaluation period to include in the
+          start: Year and month landing within the first SLA evaluation period to include in the
               result, in the format YYYY-MM
 
           extra_headers: Send extra headers
@@ -145,8 +145,8 @@ class SlasResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
-                        "timeframe_end": timeframe_end,
-                        "timeframe_start": timeframe_start,
+                        "end": end,
+                        "start": start,
                     },
                     sla_get_uptime_metrics_params.SlaGetUptimeMetricsParams,
                 ),
@@ -165,8 +165,11 @@ class SlasResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SlaListDataSourcesResponse:
-        """
-        List all data sources for an SLA
+        """List all data sources for an SLA.
+
+        There is never more than one status page
+        source, and the monitor data sources are sorted alphabetically by name
+        (case-insensitive).
 
         Args:
           extra_headers: Send extra headers
@@ -192,8 +195,8 @@ class SlasResource(SyncAPIResource):
         sla_urn: str,
         *,
         data_source_urn: Optional[str] | Omit = omit,
-        timeframe_end: Optional[str] | Omit = omit,
-        timeframe_start: Optional[str] | Omit = omit,
+        end_month: Optional[str] | Omit = omit,
+        start_month: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -202,16 +205,17 @@ class SlasResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SlaListViolationsResponse:
         """
-        List all violations for an SLA
+        List all violations for an SLA, sorted first by timestamp (oldest first) and
+        second by total downtime (longest first).
 
         Args:
           data_source_urn: An SLA data source's unique identifier
 
-          timeframe_end: Year and month landing within the last SLA evaluation period to include in the
-              result, in the format YYYY-MM
+          end_month: Year and month landing within the last SLA evaluation period to include in the
+              result, in the format YYYY-MM. Defaults to the current time.
 
-          timeframe_start: Year and month landing within the first SLA evaluation period to include in the
-              result, in the format YYYY-MM
+          start_month: Year and month landing within the first SLA evaluation period to include in the
+              result, in the format YYYY-MM. Defaults to 2024-01.
 
           extra_headers: Send extra headers
 
@@ -233,8 +237,8 @@ class SlasResource(SyncAPIResource):
                 query=maybe_transform(
                     {
                         "data_source_urn": data_source_urn,
-                        "timeframe_end": timeframe_end,
-                        "timeframe_start": timeframe_start,
+                        "end_month": end_month,
+                        "start_month": start_month,
                     },
                     sla_list_violations_params.SlaListViolationsParams,
                 ),
@@ -342,7 +346,7 @@ class AsyncSlasResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SlaListResponse:
-        """List all SLAs"""
+        """List all SLAs, sorted by name alphabetically (case-insensitive)"""
         return await self._get(
             "/v1/slas",
             options=make_request_options(
@@ -356,8 +360,8 @@ class AsyncSlasResource(AsyncAPIResource):
         data_source_urn: str,
         *,
         sla_urn: str,
-        timeframe_end: Optional[str] | Omit = omit,
-        timeframe_start: Optional[str] | Omit = omit,
+        end: str,
+        start: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -369,10 +373,10 @@ class AsyncSlasResource(AsyncAPIResource):
         Get uptime metrics for an SLA data source
 
         Args:
-          timeframe_end: Year and month landing within the last SLA evaluation period to include in the
+          end: Year and month landing within the last SLA evaluation period to include in the
               result, in the format YYYY-MM
 
-          timeframe_start: Year and month landing within the first SLA evaluation period to include in the
+          start: Year and month landing within the first SLA evaluation period to include in the
               result, in the format YYYY-MM
 
           extra_headers: Send extra headers
@@ -396,8 +400,8 @@ class AsyncSlasResource(AsyncAPIResource):
                 timeout=timeout,
                 query=await async_maybe_transform(
                     {
-                        "timeframe_end": timeframe_end,
-                        "timeframe_start": timeframe_start,
+                        "end": end,
+                        "start": start,
                     },
                     sla_get_uptime_metrics_params.SlaGetUptimeMetricsParams,
                 ),
@@ -416,8 +420,11 @@ class AsyncSlasResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SlaListDataSourcesResponse:
-        """
-        List all data sources for an SLA
+        """List all data sources for an SLA.
+
+        There is never more than one status page
+        source, and the monitor data sources are sorted alphabetically by name
+        (case-insensitive).
 
         Args:
           extra_headers: Send extra headers
@@ -443,8 +450,8 @@ class AsyncSlasResource(AsyncAPIResource):
         sla_urn: str,
         *,
         data_source_urn: Optional[str] | Omit = omit,
-        timeframe_end: Optional[str] | Omit = omit,
-        timeframe_start: Optional[str] | Omit = omit,
+        end_month: Optional[str] | Omit = omit,
+        start_month: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -453,16 +460,17 @@ class AsyncSlasResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SlaListViolationsResponse:
         """
-        List all violations for an SLA
+        List all violations for an SLA, sorted first by timestamp (oldest first) and
+        second by total downtime (longest first).
 
         Args:
           data_source_urn: An SLA data source's unique identifier
 
-          timeframe_end: Year and month landing within the last SLA evaluation period to include in the
-              result, in the format YYYY-MM
+          end_month: Year and month landing within the last SLA evaluation period to include in the
+              result, in the format YYYY-MM. Defaults to the current time.
 
-          timeframe_start: Year and month landing within the first SLA evaluation period to include in the
-              result, in the format YYYY-MM
+          start_month: Year and month landing within the first SLA evaluation period to include in the
+              result, in the format YYYY-MM. Defaults to 2024-01.
 
           extra_headers: Send extra headers
 
@@ -484,8 +492,8 @@ class AsyncSlasResource(AsyncAPIResource):
                 query=await async_maybe_transform(
                     {
                         "data_source_urn": data_source_urn,
-                        "timeframe_end": timeframe_end,
-                        "timeframe_start": timeframe_start,
+                        "end_month": end_month,
+                        "start_month": start_month,
                     },
                     sla_list_violations_params.SlaListViolationsParams,
                 ),
