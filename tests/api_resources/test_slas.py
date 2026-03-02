@@ -100,17 +100,8 @@ class TestSlas:
         sla = client.slas.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
-        )
-        assert_matches_type(SlaGetUptimeMetricsResponse, sla, path=["response"])
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    def test_method_get_uptime_metrics_with_all_params(self, client: Clarative) -> None:
-        sla = client.slas.get_uptime_metrics(
-            data_source_urn="data_source_urn",
-            sla_urn="sla_urn",
-            timeframe_end="timeframe_end",
-            timeframe_start="timeframe_start",
+            end="end",
+            start="start",
         )
         assert_matches_type(SlaGetUptimeMetricsResponse, sla, path=["response"])
 
@@ -120,6 +111,8 @@ class TestSlas:
         response = client.slas.with_raw_response.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
+            end="end",
+            start="start",
         )
 
         assert response.is_closed is True
@@ -133,6 +126,8 @@ class TestSlas:
         with client.slas.with_streaming_response.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
+            end="end",
+            start="start",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -149,12 +144,16 @@ class TestSlas:
             client.slas.with_raw_response.get_uptime_metrics(
                 data_source_urn="data_source_urn",
                 sla_urn="",
+                end="end",
+                start="start",
             )
 
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `data_source_urn` but received ''"):
             client.slas.with_raw_response.get_uptime_metrics(
                 data_source_urn="",
                 sla_urn="sla_urn",
+                end="end",
+                start="start",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -213,8 +212,8 @@ class TestSlas:
         sla = client.slas.list_violations(
             sla_urn="sla_urn",
             data_source_urn="data_source_urn",
-            timeframe_end="timeframe_end",
-            timeframe_start="timeframe_start",
+            end_month="end_month",
+            start_month="start_month",
         )
         assert_matches_type(SlaListViolationsResponse, sla, path=["response"])
 
@@ -386,17 +385,8 @@ class TestAsyncSlas:
         sla = await async_client.slas.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
-        )
-        assert_matches_type(SlaGetUptimeMetricsResponse, sla, path=["response"])
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    async def test_method_get_uptime_metrics_with_all_params(self, async_client: AsyncClarative) -> None:
-        sla = await async_client.slas.get_uptime_metrics(
-            data_source_urn="data_source_urn",
-            sla_urn="sla_urn",
-            timeframe_end="timeframe_end",
-            timeframe_start="timeframe_start",
+            end="end",
+            start="start",
         )
         assert_matches_type(SlaGetUptimeMetricsResponse, sla, path=["response"])
 
@@ -406,6 +396,8 @@ class TestAsyncSlas:
         response = await async_client.slas.with_raw_response.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
+            end="end",
+            start="start",
         )
 
         assert response.is_closed is True
@@ -419,6 +411,8 @@ class TestAsyncSlas:
         async with async_client.slas.with_streaming_response.get_uptime_metrics(
             data_source_urn="data_source_urn",
             sla_urn="sla_urn",
+            end="end",
+            start="start",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -435,12 +429,16 @@ class TestAsyncSlas:
             await async_client.slas.with_raw_response.get_uptime_metrics(
                 data_source_urn="data_source_urn",
                 sla_urn="",
+                end="end",
+                start="start",
             )
 
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `data_source_urn` but received ''"):
             await async_client.slas.with_raw_response.get_uptime_metrics(
                 data_source_urn="",
                 sla_urn="sla_urn",
+                end="end",
+                start="start",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -499,8 +497,8 @@ class TestAsyncSlas:
         sla = await async_client.slas.list_violations(
             sla_urn="sla_urn",
             data_source_urn="data_source_urn",
-            timeframe_end="timeframe_end",
-            timeframe_start="timeframe_start",
+            end_month="end_month",
+            start_month="start_month",
         )
         assert_matches_type(SlaListViolationsResponse, sla, path=["response"])
 
