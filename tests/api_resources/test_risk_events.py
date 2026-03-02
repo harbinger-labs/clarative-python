@@ -69,7 +69,7 @@ class TestRiskEvents:
     @parametrize
     def test_method_list_with_all_params(self, client: Clarative) -> None:
         risk_event = client.risk_events.list(
-            risk_threshold="LOW",
+            risk_threshold="UNASSIGNED",
             vendor_urn="vendor_urn",
         )
         assert_matches_type(RiskEventListResponse, risk_event, path=["response"])
@@ -154,7 +154,7 @@ class TestAsyncRiskEvents:
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncClarative) -> None:
         risk_event = await async_client.risk_events.list(
-            risk_threshold="LOW",
+            risk_threshold="UNASSIGNED",
             vendor_urn="vendor_urn",
         )
         assert_matches_type(RiskEventListResponse, risk_event, path=["response"])
