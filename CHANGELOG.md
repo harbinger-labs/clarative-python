@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.0.5 (2026-03-19)
+
+Full Changelog: [v0.0.4...v0.0.5](https://github.com/harbinger-labs/clarative-python/compare/v0.0.4...v0.0.5)
+
+### Features
+
+* Custom Vendor Metadata Fields ([e71229c](https://github.com/harbinger-labs/clarative-python/commit/e71229c2916bc60ccd449a7199133cb262971ee3))
+
+
+### Bug Fixes
+
+* **deps:** bump minimum typing-extensions version ([500d047](https://github.com/harbinger-labs/clarative-python/commit/500d047841e537eeed8824d63fd4b55dcd1a806d))
+* **pydantic:** do not pass `by_alias` unless set ([43a0ed2](https://github.com/harbinger-labs/clarative-python/commit/43a0ed27ea15d3fef65dfa6e590bd6b45c0952ed))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([007a809](https://github.com/harbinger-labs/clarative-python/commit/007a8097e4994fddfdb9b9b938f233ea9c6fafdb))
+* **internal:** refactor authentication internals ([b8fc90f](https://github.com/harbinger-labs/clarative-python/commit/b8fc90f82ed36661b733a505d4fb8a93490486d8))
+* **internal:** tweak CI branches ([25d879c](https://github.com/harbinger-labs/clarative-python/commit/25d879cab9102502d1fe161696943c9c520b8766))
+
 ## 0.0.4 (2026-03-02)
 
 Full Changelog: [v0.0.3...v0.0.4](https://github.com/harbinger-labs/clarative-python/compare/v0.0.3...v0.0.4)
