@@ -8,7 +8,7 @@ import httpx
 
 from ..types import sla_list_violations_params, sla_get_uptime_metrics_params
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from .._utils import maybe_transform, async_maybe_transform
+from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -74,7 +74,7 @@ class SlasResource(SyncAPIResource):
         if not urn:
             raise ValueError(f"Expected a non-empty value for `urn` but received {urn!r}")
         return self._get(
-            f"/v1/slas/{urn}",
+            path_template("/v1/slas/{urn}", urn=urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -137,7 +137,11 @@ class SlasResource(SyncAPIResource):
         if not data_source_urn:
             raise ValueError(f"Expected a non-empty value for `data_source_urn` but received {data_source_urn!r}")
         return self._get(
-            f"/v1/slas/{sla_urn}/data-sources/{data_source_urn}/uptime-metrics",
+            path_template(
+                "/v1/slas/{sla_urn}/data-sources/{data_source_urn}/uptime-metrics",
+                sla_urn=sla_urn,
+                data_source_urn=data_source_urn,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -183,7 +187,7 @@ class SlasResource(SyncAPIResource):
         if not sla_urn:
             raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
         return self._get(
-            f"/v1/slas/{sla_urn}/data-sources",
+            path_template("/v1/slas/{sla_urn}/data-sources", sla_urn=sla_urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -228,7 +232,7 @@ class SlasResource(SyncAPIResource):
         if not sla_urn:
             raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
         return self._get(
-            f"/v1/slas/{sla_urn}/violations",
+            path_template("/v1/slas/{sla_urn}/violations", sla_urn=sla_urn),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -275,7 +279,9 @@ class SlasResource(SyncAPIResource):
         if not violation_urn:
             raise ValueError(f"Expected a non-empty value for `violation_urn` but received {violation_urn!r}")
         return self._get(
-            f"/v1/slas/{sla_urn}/violations/{violation_urn}",
+            path_template(
+                "/v1/slas/{sla_urn}/violations/{violation_urn}", sla_urn=sla_urn, violation_urn=violation_urn
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -329,7 +335,7 @@ class AsyncSlasResource(AsyncAPIResource):
         if not urn:
             raise ValueError(f"Expected a non-empty value for `urn` but received {urn!r}")
         return await self._get(
-            f"/v1/slas/{urn}",
+            path_template("/v1/slas/{urn}", urn=urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -392,7 +398,11 @@ class AsyncSlasResource(AsyncAPIResource):
         if not data_source_urn:
             raise ValueError(f"Expected a non-empty value for `data_source_urn` but received {data_source_urn!r}")
         return await self._get(
-            f"/v1/slas/{sla_urn}/data-sources/{data_source_urn}/uptime-metrics",
+            path_template(
+                "/v1/slas/{sla_urn}/data-sources/{data_source_urn}/uptime-metrics",
+                sla_urn=sla_urn,
+                data_source_urn=data_source_urn,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -438,7 +448,7 @@ class AsyncSlasResource(AsyncAPIResource):
         if not sla_urn:
             raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
         return await self._get(
-            f"/v1/slas/{sla_urn}/data-sources",
+            path_template("/v1/slas/{sla_urn}/data-sources", sla_urn=sla_urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -483,7 +493,7 @@ class AsyncSlasResource(AsyncAPIResource):
         if not sla_urn:
             raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
         return await self._get(
-            f"/v1/slas/{sla_urn}/violations",
+            path_template("/v1/slas/{sla_urn}/violations", sla_urn=sla_urn),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -530,7 +540,9 @@ class AsyncSlasResource(AsyncAPIResource):
         if not violation_urn:
             raise ValueError(f"Expected a non-empty value for `violation_urn` but received {violation_urn!r}")
         return await self._get(
-            f"/v1/slas/{sla_urn}/violations/{violation_urn}",
+            path_template(
+                "/v1/slas/{sla_urn}/violations/{violation_urn}", sla_urn=sla_urn, violation_urn=violation_urn
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
