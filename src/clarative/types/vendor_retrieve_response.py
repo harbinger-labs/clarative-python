@@ -30,6 +30,9 @@ class VendorRetrieveResponse(BaseModel):
     description: Optional[str] = None
     """The vendor's description"""
 
+    lifecycle_stage: Literal["INITIAL_ASSESSMENT", "ONBOARDED"]
+    """The vendor's current lifecycle stage"""
+
     name: str
     """The vendor's display name"""
 
