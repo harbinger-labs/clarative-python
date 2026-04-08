@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.1.0 (2026-04-08)
+
+Full Changelog: [v0.0.5...v0.1.0](https://github.com/harbinger-labs/clarative-python/compare/v0.0.5...v0.1.0)
+
+### Features
+
+* **internal:** implement indices array format for query and form serialization ([4899970](https://github.com/harbinger-labs/clarative-python/commit/4899970635a3fd07d21303e85974e31c1c99a6ad))
+* Risk event endpoint enhancements ([cbd4b24](https://github.com/harbinger-labs/clarative-python/commit/cbd4b24786fa09086cc45b4263d4ae6d1080d7d8))
+* Vendor endpoint enhancements + SLA filter ([7a203f6](https://github.com/harbinger-labs/clarative-python/commit/7a203f61aab380a9a625fcc97cec35bd6a77a710))
+
+
+### Bug Fixes
+
+* **client:** preserve hardcoded query params when merging with user params ([0954fd1](https://github.com/harbinger-labs/clarative-python/commit/0954fd1fa710e44c4b53bb20bac83918fc9fbbbb))
+* sanitize endpoint path params ([f66ec69](https://github.com/harbinger-labs/clarative-python/commit/f66ec69d76e2c1b97fe86cd695f992d6307aaecd))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([1ec0ef2](https://github.com/harbinger-labs/clarative-python/commit/1ec0ef25c90d0a919f6714af737e2fb9e3eacd03))
+* **internal:** update gitignore ([ab05b15](https://github.com/harbinger-labs/clarative-python/commit/ab05b15363a719f5c008235b35bde1e7dbd5a55f))
+
 ## 0.0.5 (2026-03-19)
 
 Full Changelog: [v0.0.4...v0.0.5](https://github.com/harbinger-labs/clarative-python/compare/v0.0.4...v0.0.5)
