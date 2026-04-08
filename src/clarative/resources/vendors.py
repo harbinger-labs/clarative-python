@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
+from typing import Optional
+from typing_extensions import Literal
+
 import httpx
 
-from .._types import Body, Query, Headers, NotGiven, not_given
+from ..types import vendor_list_params
+from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -66,7 +71,7 @@ class VendorsResource(SyncAPIResource):
         if not urn:
             raise ValueError(f"Expected a non-empty value for `urn` but received {urn!r}")
         return self._get(
-            f"/v1/vendors/{urn}",
+            path_template("/v1/vendors/{urn}", urn=urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -76,6 +81,7 @@ class VendorsResource(SyncAPIResource):
     def list(
         self,
         *,
+        lifecycle_stage: Optional[Literal["INITIAL_ASSESSMENT", "ONBOARDED"]] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -83,11 +89,28 @@ class VendorsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> VendorListResponse:
-        """List all vendors, sorted by name alphabetically (case-insensitive)"""
+        """
+        List all vendors, sorted by name alphabetically (case-insensitive)
+
+        Args:
+          lifecycle_stage: Filter vendors by lifecycle stage
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
         return self._get(
             "/v1/vendors",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"lifecycle_stage": lifecycle_stage}, vendor_list_params.VendorListParams),
             ),
             cast_to=VendorListResponse,
         )
@@ -139,7 +162,7 @@ class AsyncVendorsResource(AsyncAPIResource):
         if not urn:
             raise ValueError(f"Expected a non-empty value for `urn` but received {urn!r}")
         return await self._get(
-            f"/v1/vendors/{urn}",
+            path_template("/v1/vendors/{urn}", urn=urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -149,6 +172,7 @@ class AsyncVendorsResource(AsyncAPIResource):
     async def list(
         self,
         *,
+        lifecycle_stage: Optional[Literal["INITIAL_ASSESSMENT", "ONBOARDED"]] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -156,11 +180,30 @@ class AsyncVendorsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> VendorListResponse:
-        """List all vendors, sorted by name alphabetically (case-insensitive)"""
+        """
+        List all vendors, sorted by name alphabetically (case-insensitive)
+
+        Args:
+          lifecycle_stage: Filter vendors by lifecycle stage
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
         return await self._get(
             "/v1/vendors",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"lifecycle_stage": lifecycle_stage}, vendor_list_params.VendorListParams
+                ),
             ),
             cast_to=VendorListResponse,
         )

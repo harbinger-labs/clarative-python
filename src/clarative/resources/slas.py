@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Union, Optional
+from datetime import datetime
 
 import httpx
 
-from ..types import sla_list_violations_params, sla_get_uptime_metrics_params
+from ..types import sla_list_params, sla_list_violations_params, sla_get_uptime_metrics_params
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from .._utils import maybe_transform, async_maybe_transform
+from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -74,7 +75,7 @@ class SlasResource(SyncAPIResource):
         if not urn:
             raise ValueError(f"Expected a non-empty value for `urn` but received {urn!r}")
         return self._get(
-            f"/v1/slas/{urn}",
+            path_template("/v1/slas/{urn}", urn=urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -84,6 +85,7 @@ class SlasResource(SyncAPIResource):
     def list(
         self,
         *,
+        vendor_urn: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -91,11 +93,28 @@ class SlasResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SlaListResponse:
-        """List all SLAs, sorted by name alphabetically (case-insensitive)"""
+        """
+        List all SLAs, sorted by name alphabetically (case-insensitive)
+
+        Args:
+          vendor_urn: A vendor's unique identifier
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
         return self._get(
             "/v1/slas",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"vendor_urn": vendor_urn}, sla_list_params.SlaListParams),
             ),
             cast_to=SlaListResponse,
         )
@@ -105,8 +124,8 @@ class SlasResource(SyncAPIResource):
         data_source_urn: str,
         *,
         sla_urn: str,
-        end: str,
-        start: str,
+        end: Union[str, datetime],
+        start: Union[str, datetime],
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -118,11 +137,11 @@ class SlasResource(SyncAPIResource):
         Get uptime metrics for an SLA data source
 
         Args:
-          end: Year and month landing within the last SLA evaluation period to include in the
-              result, in the format YYYY-MM
+          end: ISO-formatted datetime for the end of the evaluation period (e.g. 2024-01-31,
+              2024-01-31T23:59:59Z)
 
-          start: Year and month landing within the first SLA evaluation period to include in the
-              result, in the format YYYY-MM
+          start: ISO-formatted datetime for the start of the evaluation period (e.g. 2024-01-01,
+              2024-01-15T08:00:00Z)
 
           extra_headers: Send extra headers
 
@@ -137,7 +156,11 @@ class SlasResource(SyncAPIResource):
         if not data_source_urn:
             raise ValueError(f"Expected a non-empty value for `data_source_urn` but received {data_source_urn!r}")
         return self._get(
-            f"/v1/slas/{sla_urn}/data-sources/{data_source_urn}/uptime-metrics",
+            path_template(
+                "/v1/slas/{sla_urn}/data-sources/{data_source_urn}/uptime-metrics",
+                sla_urn=sla_urn,
+                data_source_urn=data_source_urn,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -183,7 +206,7 @@ class SlasResource(SyncAPIResource):
         if not sla_urn:
             raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
         return self._get(
-            f"/v1/slas/{sla_urn}/data-sources",
+            path_template("/v1/slas/{sla_urn}/data-sources", sla_urn=sla_urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -228,7 +251,7 @@ class SlasResource(SyncAPIResource):
         if not sla_urn:
             raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
         return self._get(
-            f"/v1/slas/{sla_urn}/violations",
+            path_template("/v1/slas/{sla_urn}/violations", sla_urn=sla_urn),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -275,7 +298,9 @@ class SlasResource(SyncAPIResource):
         if not violation_urn:
             raise ValueError(f"Expected a non-empty value for `violation_urn` but received {violation_urn!r}")
         return self._get(
-            f"/v1/slas/{sla_urn}/violations/{violation_urn}",
+            path_template(
+                "/v1/slas/{sla_urn}/violations/{violation_urn}", sla_urn=sla_urn, violation_urn=violation_urn
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -329,7 +354,7 @@ class AsyncSlasResource(AsyncAPIResource):
         if not urn:
             raise ValueError(f"Expected a non-empty value for `urn` but received {urn!r}")
         return await self._get(
-            f"/v1/slas/{urn}",
+            path_template("/v1/slas/{urn}", urn=urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -339,6 +364,7 @@ class AsyncSlasResource(AsyncAPIResource):
     async def list(
         self,
         *,
+        vendor_urn: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -346,11 +372,28 @@ class AsyncSlasResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SlaListResponse:
-        """List all SLAs, sorted by name alphabetically (case-insensitive)"""
+        """
+        List all SLAs, sorted by name alphabetically (case-insensitive)
+
+        Args:
+          vendor_urn: A vendor's unique identifier
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
         return await self._get(
             "/v1/slas",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform({"vendor_urn": vendor_urn}, sla_list_params.SlaListParams),
             ),
             cast_to=SlaListResponse,
         )
@@ -360,8 +403,8 @@ class AsyncSlasResource(AsyncAPIResource):
         data_source_urn: str,
         *,
         sla_urn: str,
-        end: str,
-        start: str,
+        end: Union[str, datetime],
+        start: Union[str, datetime],
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -373,11 +416,11 @@ class AsyncSlasResource(AsyncAPIResource):
         Get uptime metrics for an SLA data source
 
         Args:
-          end: Year and month landing within the last SLA evaluation period to include in the
-              result, in the format YYYY-MM
+          end: ISO-formatted datetime for the end of the evaluation period (e.g. 2024-01-31,
+              2024-01-31T23:59:59Z)
 
-          start: Year and month landing within the first SLA evaluation period to include in the
-              result, in the format YYYY-MM
+          start: ISO-formatted datetime for the start of the evaluation period (e.g. 2024-01-01,
+              2024-01-15T08:00:00Z)
 
           extra_headers: Send extra headers
 
@@ -392,7 +435,11 @@ class AsyncSlasResource(AsyncAPIResource):
         if not data_source_urn:
             raise ValueError(f"Expected a non-empty value for `data_source_urn` but received {data_source_urn!r}")
         return await self._get(
-            f"/v1/slas/{sla_urn}/data-sources/{data_source_urn}/uptime-metrics",
+            path_template(
+                "/v1/slas/{sla_urn}/data-sources/{data_source_urn}/uptime-metrics",
+                sla_urn=sla_urn,
+                data_source_urn=data_source_urn,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -438,7 +485,7 @@ class AsyncSlasResource(AsyncAPIResource):
         if not sla_urn:
             raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
         return await self._get(
-            f"/v1/slas/{sla_urn}/data-sources",
+            path_template("/v1/slas/{sla_urn}/data-sources", sla_urn=sla_urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -483,7 +530,7 @@ class AsyncSlasResource(AsyncAPIResource):
         if not sla_urn:
             raise ValueError(f"Expected a non-empty value for `sla_urn` but received {sla_urn!r}")
         return await self._get(
-            f"/v1/slas/{sla_urn}/violations",
+            path_template("/v1/slas/{sla_urn}/violations", sla_urn=sla_urn),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -530,7 +577,9 @@ class AsyncSlasResource(AsyncAPIResource):
         if not violation_urn:
             raise ValueError(f"Expected a non-empty value for `violation_urn` but received {violation_urn!r}")
         return await self._get(
-            f"/v1/slas/{sla_urn}/violations/{violation_urn}",
+            path_template(
+                "/v1/slas/{sla_urn}/violations/{violation_urn}", sla_urn=sla_urn, violation_urn=violation_urn
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),

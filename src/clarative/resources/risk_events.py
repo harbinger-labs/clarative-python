@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import List, Union, Optional
+from datetime import datetime
 from typing_extensions import Literal
 
 import httpx
 
 from ..types import risk_event_list_params
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from .._utils import maybe_transform, async_maybe_transform
+from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -71,7 +72,7 @@ class RiskEventsResource(SyncAPIResource):
         if not urn:
             raise ValueError(f"Expected a non-empty value for `urn` but received {urn!r}")
         return self._get(
-            f"/v1/risk-events/{urn}",
+            path_template("/v1/risk-events/{urn}", urn=urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -81,6 +82,9 @@ class RiskEventsResource(SyncAPIResource):
     def list(
         self,
         *,
+        created_after: Union[str, datetime, None] | Omit = omit,
+        created_before: Union[str, datetime, None] | Omit = omit,
+        review_statuses: Optional[List[Literal["PENDING", "VERIFYING", "APPLICABLE", "NOT_APPLICABLE"]]] | Omit = omit,
         risk_threshold: Optional[Literal["UNASSIGNED", "NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"]] | Omit = omit,
         vendor_urn: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -91,9 +95,15 @@ class RiskEventsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> RiskEventListResponse:
         """
-        List all risk events with optional filters, sorted by recency (oldest first)
+        List all risk events with optional filters, sorted by most recent first
 
         Args:
+          created_after: Filter events created on or after this ISO-8601 timestamp
+
+          created_before: Filter events created before this ISO-8601 timestamp
+
+          review_statuses: Filter events by review status (PENDING, VERIFYING, APPLICABLE, NOT_APPLICABLE)
+
           risk_threshold: Filter events by minimum risk level
 
           vendor_urn: A vendor's unique identifier
@@ -115,6 +125,9 @@ class RiskEventsResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
+                        "created_after": created_after,
+                        "created_before": created_before,
+                        "review_statuses": review_statuses,
                         "risk_threshold": risk_threshold,
                         "vendor_urn": vendor_urn,
                     },
@@ -171,7 +184,7 @@ class AsyncRiskEventsResource(AsyncAPIResource):
         if not urn:
             raise ValueError(f"Expected a non-empty value for `urn` but received {urn!r}")
         return await self._get(
-            f"/v1/risk-events/{urn}",
+            path_template("/v1/risk-events/{urn}", urn=urn),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -181,6 +194,9 @@ class AsyncRiskEventsResource(AsyncAPIResource):
     async def list(
         self,
         *,
+        created_after: Union[str, datetime, None] | Omit = omit,
+        created_before: Union[str, datetime, None] | Omit = omit,
+        review_statuses: Optional[List[Literal["PENDING", "VERIFYING", "APPLICABLE", "NOT_APPLICABLE"]]] | Omit = omit,
         risk_threshold: Optional[Literal["UNASSIGNED", "NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"]] | Omit = omit,
         vendor_urn: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -191,9 +207,15 @@ class AsyncRiskEventsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> RiskEventListResponse:
         """
-        List all risk events with optional filters, sorted by recency (oldest first)
+        List all risk events with optional filters, sorted by most recent first
 
         Args:
+          created_after: Filter events created on or after this ISO-8601 timestamp
+
+          created_before: Filter events created before this ISO-8601 timestamp
+
+          review_statuses: Filter events by review status (PENDING, VERIFYING, APPLICABLE, NOT_APPLICABLE)
+
           risk_threshold: Filter events by minimum risk level
 
           vendor_urn: A vendor's unique identifier
@@ -215,6 +237,9 @@ class AsyncRiskEventsResource(AsyncAPIResource):
                 timeout=timeout,
                 query=await async_maybe_transform(
                     {
+                        "created_after": created_after,
+                        "created_before": created_before,
+                        "review_statuses": review_statuses,
                         "risk_threshold": risk_threshold,
                         "vendor_urn": vendor_urn,
                     },
