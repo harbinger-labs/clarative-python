@@ -10,6 +10,7 @@ import pytest
 from clarative import Clarative, AsyncClarative
 from tests.utils import assert_matches_type
 from clarative.types import RiskEventListResponse, RiskEventRetrieveResponse
+from clarative._utils import parse_datetime
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -69,6 +70,9 @@ class TestRiskEvents:
     @parametrize
     def test_method_list_with_all_params(self, client: Clarative) -> None:
         risk_event = client.risk_events.list(
+            created_after=parse_datetime("2019-12-27T18:11:19.117Z"),
+            created_before=parse_datetime("2019-12-27T18:11:19.117Z"),
+            review_statuses=["PENDING"],
             risk_threshold="UNASSIGNED",
             vendor_urn="vendor_urn",
         )
@@ -154,6 +158,9 @@ class TestAsyncRiskEvents:
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncClarative) -> None:
         risk_event = await async_client.risk_events.list(
+            created_after=parse_datetime("2019-12-27T18:11:19.117Z"),
+            created_before=parse_datetime("2019-12-27T18:11:19.117Z"),
+            review_statuses=["PENDING"],
             risk_threshold="UNASSIGNED",
             vendor_urn="vendor_urn",
         )

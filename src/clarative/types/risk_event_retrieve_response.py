@@ -1,6 +1,6 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import Optional
+from typing import List, Optional
 from datetime import datetime
 from typing_extensions import Literal
 
@@ -78,3 +78,6 @@ class RiskEventRetrieveResponse(BaseModel):
 
     vendor: Vendor
     """Details about the vendor associated with this risk event."""
+
+    category_tags: Optional[List[str]] = None
+    """Tags indicating the nature of the risk event."""
