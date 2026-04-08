@@ -67,6 +67,14 @@ class TestVendors:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
+    def test_method_list_with_all_params(self, client: Clarative) -> None:
+        vendor = client.vendors.list(
+            lifecycle_stage="INITIAL_ASSESSMENT",
+        )
+        assert_matches_type(VendorListResponse, vendor, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
     def test_raw_response_list(self, client: Clarative) -> None:
         response = client.vendors.with_raw_response.list()
 
@@ -139,6 +147,14 @@ class TestAsyncVendors:
     @parametrize
     async def test_method_list(self, async_client: AsyncClarative) -> None:
         vendor = await async_client.vendors.list()
+        assert_matches_type(VendorListResponse, vendor, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_list_with_all_params(self, async_client: AsyncClarative) -> None:
+        vendor = await async_client.vendors.list(
+            lifecycle_stage="INITIAL_ASSESSMENT",
+        )
         assert_matches_type(VendorListResponse, vendor, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
