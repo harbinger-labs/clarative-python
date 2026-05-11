@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.2.0 (2026-05-11)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/harbinger-labs/clarative-python/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* Add SLA tier details to developer API retrieve endpoint ([3a1e889](https://github.com/harbinger-labs/clarative-python/commit/3a1e8898d0d48f0ca803df8911115b6b13ae7871))
+* Add vendor domains to developer API list and retrieve endpoints ([1818aed](https://github.com/harbinger-labs/clarative-python/commit/1818aedeb8171791dc8996de8f23aac2875c5098))
+* support setting headers via env ([24370c8](https://github.com/harbinger-labs/clarative-python/commit/24370c8fa536baf6a55669d0c38b7026148e8e8d))
+
+
+### Bug Fixes
+
+* **client:** add missing f-string prefix in file type error message ([f943621](https://github.com/harbinger-labs/clarative-python/commit/f943621454f6f0e2bf4cda3a21cb70f1fd609d39))
+* ensure file data are only sent as 1 parameter ([0913887](https://github.com/harbinger-labs/clarative-python/commit/09138874e46da0b75b45c89674278dae0df94f9e))
+* use correct field name format for multipart file arrays ([4e73598](https://github.com/harbinger-labs/clarative-python/commit/4e73598b1db03e23bc647d158b4dddfb0da0c623))
+
+
+### Performance Improvements
+
+* **client:** optimize file structure copying in multipart requests ([fa1daba](https://github.com/harbinger-labs/clarative-python/commit/fa1dabaea11bd8856d8b9466c1f57b434e3e34f2))
+
+
+### Chores
+
+* **internal:** more robust bootstrap script ([80e4352](https://github.com/harbinger-labs/clarative-python/commit/80e4352a7b76730fbf5c5716a1bd56593fbc46af))
+* **internal:** reformat pyproject.toml ([953710b](https://github.com/harbinger-labs/clarative-python/commit/953710b9d6f1c590c6de0bc9f8d8bc49dd799bca))
+
 ## 0.1.0 (2026-04-08)
 
 Full Changelog: [v0.0.5...v0.1.0](https://github.com/harbinger-labs/clarative-python/compare/v0.0.5...v0.1.0)

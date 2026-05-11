@@ -39,5 +39,8 @@ class VendorRetrieveResponse(BaseModel):
     urn: str
     """A unique identifier for the vendor"""
 
+    domains: Optional[List[str]] = None
+    """A list of domains associated with the vendor"""
+
     metadata: Optional[List[Metadata]] = None
     """A list of custom metadata fields associated with the vendor"""

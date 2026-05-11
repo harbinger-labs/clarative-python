@@ -37,6 +37,9 @@ class Vendor(BaseModel):
     urn: str
     """A unique identifier for the vendor"""
 
+    domains: Optional[List[str]] = None
+    """A list of domains associated with the vendor"""
+
 
 class RiskEventRetrieveResponse(BaseModel):
     ai_risk_level_recommendation: Optional[AIRiskLevelRecommendation] = None

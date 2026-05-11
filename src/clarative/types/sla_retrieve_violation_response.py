@@ -129,6 +129,9 @@ class Vendor(BaseModel):
     urn: str
     """A unique identifier for the vendor"""
 
+    domains: Optional[List[str]] = None
+    """A list of domains associated with the vendor"""
+
 
 class SlaRetrieveViolationResponse(BaseModel):
     allowable_downtime_hours: float
